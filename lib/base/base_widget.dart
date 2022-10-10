@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 abstract class BaseWidget extends StatefulWidget {
@@ -36,40 +37,24 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     super.didChangeDependencies();
   }
 
-  Future toPage(Widget w) {
-    log("Move to Page=======================>${w.toStringShallow()}");
-    // return Navigator.of(context).push(MaterialPageRoute(builder: (con) {
-    //   return w;
-    // }));
-    return Navigator.of(context).push(
-      MaterialPageRoute(
-        settings: RouteSettings(name: "/${w.toStringShallow()}"),
-        builder: (context) => w,
-      ),
-    );
+  Future toPage({required String routesName}) {
+    return Navigator.pushNamed(context, routesName);
   }
 
-  void popUntil(String name) {
-    log("pop until  Page=======================>$name");
-    Navigator.of(context).popUntil(ModalRoute.withName("/$name"));
-  }
+  // void popUntil(String name) {
+  //   log("pop until  Page=======================>$name");
+  //   Navigator.of(context).popUntil(ModalRoute.withName("/$name"));
+  // }
 
-  void jumpToPagePop(Widget w) {
+  void jumpToPagePop({required String routesName}) {
     backHome();
-    toPage(w);
+    toPage(routesName: routesName);
   }
 
-  Future jumpToPage(Widget w) {
-    log("Jump to Page=======================>${w.toStringShallow()}");
+  Future jumpToPage({required String routesName}) {
+    // Navigator.pushNamed(context, RoutesName.SECOND_PAGE);
 
-    // Navigator.of(context).popUntil((route) => false)
-
-    return Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        settings: RouteSettings(name: "/${w.toStringShallow()}"),
-        builder: (context) => w,
-      ),
-    );
+    return Navigator.pushReplacementNamed(context, routesName);
   }
 
   void backHome() {
@@ -78,11 +63,9 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     });
   }
 
-  void jumpCleanToPage(Widget w) {
+  void jumpCleanToPage({required String routesName}) {
     backHome();
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con) {
-      return w;
-    }));
+    Navigator.pushReplacementNamed(context, routesName);
   }
 
   richTxt({
@@ -111,6 +94,167 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     );
   }
 
+  Widget get errorImageWidget => SizedBox(
+        height: yy(300),
+        width: xx(300),
+        child: const Center(child: Icon(Icons.error)),
+      );
+  imageFromCachedNetworkImage({
+    required String url,
+    double h = 200,
+    double w = 200,
+    BoxShape shape = BoxShape.circle,
+  }) {
+    return url.length < 5
+        ? errorImageWidget
+        : CachedNetworkImage(
+            imageUrl: url,
+            imageBuilder: (context, imageProvider) => Container(
+              height: h,
+              width: w,
+              decoration: BoxDecoration(
+                shape: shape,
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            progressIndicatorBuilder: (context, url, downloadProgress) {
+              return Center(
+                child: CircularProgressIndicator(
+                    color: bc(), value: downloadProgress.progress),
+              );
+            },
+            errorWidget: (context, url, error) => errorImageWidget,
+          );
+  }
+
+  myNetworkImage({
+    required String url,
+    //  required  String path ,
+    //= "${host}getImage/id/",
+    Color? color,
+    BoxFit fit = BoxFit.cover,
+  }) {
+    // log(path + url);
+    return url.isEmpty
+        ? errorImageWidget
+        : CachedNetworkImage(
+            imageUrl: url,
+            fit: fit,
+            color: color,
+            colorBlendMode: BlendMode.color,
+            progressIndicatorBuilder: (context, url, downloadProgress) {
+              return Center(
+                child: CircularProgressIndicator(
+                    color: Colors.blue, value: downloadProgress.progress),
+              );
+            },
+            errorWidget: (context, url, error) => errorImageWidget,
+          );
+  }
+
+  Widget holderBox(
+      {required IconData icon,
+      required String txt,
+      required void Function(PointerDownEvent) onPointerDown}) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: Listener(
+        onPointerDown: onPointerDown,
+        child: c(
+          h: yy(100),
+          w: xx(150),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                size: xx(20),
+              ),
+              txtw(txt, size: xx(20))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget registerWiget(
+      {required double h, required double w, required Widget child}) {
+    //required List<Widget> widgets
+    return c(
+        h: yy(h),
+        w: xx(w),
+        color: bc(),
+        boxShadow: [
+          const BoxShadow(
+            color: Colors.grey,
+            blurRadius: 10,
+            offset: Offset(0, 1),
+          ),
+        ],
+        child: child);
+  }
+
+  txtw(String t, {Color? color, FontWeight? fontWeight, double? size}) {
+    // color ??= const Color.fromRGBO(0, 0, 0, 0.392);
+    return Text(
+      t,
+      style: TextStyle(
+        color: color,
+        fontWeight: fontWeight,
+        fontSize: size,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+
+  Widget myForm({
+    required TextEditingController editingController,
+    required String hintText,
+    bool obscureText = false,
+  }) {
+    return TextFormField(
+      controller: editingController,
+      autofocus: false,
+      obscureText: obscureText,
+      validator: (value) {
+        if (value!.length < 3) {
+          return "$hintText n'est pas correcte ";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        // filled: true,
+        hintText: hintText,
+        // border: InputBorder.none,
+      ),
+    );
+  }
+
+  Widget get dv => Divider(color: Colors.black, thickness: xx(0.5));
+  Color bc() {
+    return Theme.of(context).backgroundColor;
+  }
+
+  Widget registerBttn(
+      {required void Function(PointerDownEvent) onPointerDown,
+      required String txt,
+      required Color color,
+      Color? txtColor}) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: Listener(
+        onPointerDown: onPointerDown,
+        child: c(
+            color: color,
+            alig: Alignment.center,
+            child: txtw(txt, color: txtColor)),
+      ),
+    );
+  }
+
   Widget c(
           {Widget? child,
           double? h,
@@ -132,6 +276,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
           BoxShape boxShape = BoxShape.rectangle,
           BorderRadius? borderRadius,
           BoxBorder? border,
+          List<BoxShadow>? boxShadow,
           Rect? centerSlice}) =>
       Container(
         alignment: alig,
@@ -152,6 +297,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
                   fit: fit,
                   alignment: decoAlignment),
           border: border,
+          boxShadow: boxShadow,
           borderRadius: boxShape != BoxShape.rectangle
               ? null
               : borderRadius ?? BorderRadius.circular(radius),
