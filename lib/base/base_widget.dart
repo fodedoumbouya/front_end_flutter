@@ -166,13 +166,18 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         child: c(
           h: yy(100),
           w: xx(150),
+          leftM: xx(20),
+          topM: yy(10),
           child: Row(
             children: [
               Icon(
                 icon,
-                size: xx(20),
+                size: xx(15),
               ),
-              txtw(txt, size: xx(20))
+              SizedBox(
+                width: xx(10),
+              ),
+              txtw(txt, size: xx(15))
             ],
           ),
         ),
@@ -197,10 +202,17 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         child: child);
   }
 
-  txtw(String t, {Color? color, FontWeight? fontWeight, double? size}) {
+  txtw(
+    String t, {
+    Color? color,
+    FontWeight? fontWeight,
+    double? size,
+    int? maxLines,
+  }) {
     // color ??= const Color.fromRGBO(0, 0, 0, 0.392);
     return Text(
       t,
+      maxLines: maxLines,
       style: TextStyle(
         color: color,
         fontWeight: fontWeight,

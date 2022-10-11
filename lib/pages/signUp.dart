@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_end_flutter/base/base_widget.dart';
+import 'package:front_end_flutter/utils/route/routeName.dart';
 
 class SignUp extends BaseWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -81,7 +82,9 @@ class _SignUpState extends BaseWidgetState<SignUp> {
                 c(
                   h: yy(120),
                   child: registerBttn(
-                    onPointerDown: (onPointerDown) {},
+                    onPointerDown: (onPointerDown) {
+                      toPage(routesName: RoutesName.HOME_PAGE);
+                    },
                     txt: "REGISTER",
                     color: const Color.fromRGBO(48, 59, 83, 1),
                     txtColor: bc(),

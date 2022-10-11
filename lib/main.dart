@@ -16,11 +16,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       builder: (context, child) => HomePage(child: child ?? const SizedBox()),
       onGenerateRoute: RouteGenerator.generateRoute,
-      initialRoute: RoutesName.HOME_PAGE,
+      initialRoute: RoutesName.LOGIN_PAGE,
 
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[100],
       ),
       // home: const Login(),
     );

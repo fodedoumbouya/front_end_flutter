@@ -112,6 +112,13 @@ class _HomeState extends BaseWidgetState<Home> {
 
   Widget get head => c(
       h: yy(100),
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(
+          offset: const Offset(1, 1),
+          color: bc(),
+        ),
+      ],
       child: Row(
         children: [
           Flexible(
@@ -125,7 +132,7 @@ class _HomeState extends BaseWidgetState<Home> {
                   )),
             ),
           ),
-          c(color: Colors.black, w: xx(0.5)),
+          // c(color: Colors.black, w: xx(0.5)),
           Flexible(
             flex: 2,
             child: c(
@@ -133,7 +140,7 @@ class _HomeState extends BaseWidgetState<Home> {
               child: txtw("Home", size: xx(15), fontWeight: FontWeight.bold),
             ),
           ),
-          c(color: Colors.black, w: xx(0.5)),
+          // c(color: Colors.black, w: xx(0.5)),
           Flexible(
               flex: 1, child: c(alig: Alignment.center, child: searchWidget)),
         ],
@@ -152,63 +159,97 @@ class _HomeState extends BaseWidgetState<Home> {
 
   Widget get leftHead => c(
       // topM: yy(2),
-      h: yy(300),
-      child: Stack(
+      h: yy(400),
+      color: Colors.white,
+      leftM: xx(40),
+      rightM: xx(40),
+      topM: xx(10),
+      boxShadow: [
+        BoxShadow(
+            color: Colors.black26,
+            blurRadius: xx(1),
+            offset: const Offset(1, 1)),
+      ],
+      child: Column(
         children: [
-          Positioned(
-            right: xx(0),
-            top: yy(0),
-            child: c(
-              alig: Alignment.bottomCenter,
-              w: xx(200),
-              h: yy(300),
-              color: Colors.grey[50],
-              child: const Center(
-                child: TextField(
-                  maxLength: 200,
-                  maxLines: 7,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Speak your mind ...",
-                    // contentPadding: EdgeInsets.only(left: xx(3), top: yy(6)),
-                  ),
-                ),
+          Expanded(
+            child: TextField(
+              maxLength: 200,
+              maxLines: 7,
+              // cursorHeight: xx(40),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: "Speak your mind ...",
+                hintStyle: TextStyle(fontSize: xx(20)),
+                contentPadding: EdgeInsets.only(left: xx(10), top: yy(0)),
               ),
             ),
           ),
-          Positioned(top: yy(10), left: xx(0), child: profil),
-          Positioned(
-              bottom: yy(0), left: xx(80), child: const Icon(Icons.image))
+          c(
+            h: yy(90),
+            // color: Colors.red,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const Icon(Icons.photo),
+                postBttn,
+              ],
+            ),
+          ),
         ],
       ));
   Widget postUI(
       {required String name, required String status, required String img}) {
     return c(
-      h: yy(800),
-      w: xx(350),
-      // color: Colors.red,
+      h: yy(1300),
+      w: xx(330),
+      color: Colors.white,
       alig: Alignment.center,
+      leftM: xx(40),
+      rightM: xx(40),
+      bottomM: xx(10),
+      topM: xx(10),
+      boxShadow: [
+        BoxShadow(
+            color: Colors.black26,
+            blurRadius: xx(1),
+            offset: const Offset(1, 1)),
+      ],
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          dv,
+          // dv,
           c(
-              h: yy(200),
-              // w: xx(300),
-              color: Colors.white,
-              // alig: Alignment.centerLeft,
+              h: yy(130),
               child: ListTile(
                 leading: profil,
-                title: txtw(name, size: xx(20), fontWeight: FontWeight.w500),
+                title: txtw(name, size: xx(15), fontWeight: FontWeight.w500),
                 subtitle: statusPost(
                     txt: status,
                     iconData: Icons.wifi_tethering_error_rounded_outlined),
                 // trailing: txtw("2022/10/10"),
               )),
+          c(
+            // color: Colors.red,
+            h: yy(140),
+            // w: xx(300),
+            alig: Alignment.center,
+            leftM: xx(45),
+            rightM: xx(30),
+            child: txtw(
+                "bla bla bla bla blaa bla bla bla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla ",
+                maxLines: 3,
+                color: const Color.fromRGBO(51, 51, 51, 1).withOpacity(0.7),
+                size: xx(10)),
+          ),
           Expanded(
+            // child: c(
+            // alig: Alignment.topCenter,
             child: myNetworkImage(
-              fit: BoxFit.fill,
+              fit: BoxFit.contain,
               url: img,
+              // ),
             ),
 
             //   ""),
@@ -234,10 +275,10 @@ class _HomeState extends BaseWidgetState<Home> {
         ],
       ));
 
-  Widget get dvHere => Divider(
-        endIndent: xx(80),
-        indent: xx(40),
-      );
+  // Widget get dvHere => Divider(
+  //       endIndent: xx(80),
+  //       indent: xx(40),
+  //     );
 
   Widget statusPost({required String txt, required IconData iconData}) {
     return Row(
@@ -259,38 +300,38 @@ class _HomeState extends BaseWidgetState<Home> {
             Expanded(
               child: Row(
                 children: [
-                  dv,
+                  // dv,
                   Flexible(
                       flex: 1,
                       child: c(
                         alig: Alignment.centerLeft,
                         child: Column(
                           children: [
-                            leftHead,
-                            dv,
-                            postBttn,
-                            dv,
+                            // leftHead,
+                            // dv,
+                            // dv,
                             Expanded(
                                 child: c(
-                              topM: yy(300),
+                              // topM: yy(300),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   holderBox(
                                       icon: Icons.home,
                                       txt: "Home",
                                       onPointerDown: (t) {}),
-                                  dvHere,
+                                  // dvHere,
                                   holderBox(
                                       icon: Icons.chat,
                                       txt: "Message",
                                       onPointerDown: (t) {}),
-                                  dvHere,
+                                  // dvHere,
                                   holderBox(
                                       icon: Icons.person,
                                       txt: "Profile",
                                       onPointerDown: (t) {}),
-                                  dvHere,
+                                  // dvHere,
                                   holderBox(
                                       icon: Icons.settings,
                                       txt: "Settings",
@@ -305,7 +346,7 @@ class _HomeState extends BaseWidgetState<Home> {
                     flex: 2,
                     child: Row(
                       children: [
-                        c(color: Colors.black, w: xx(0.5)),
+                        // c(color: Colors.black, w: xx(0.5)),
                         Expanded(
                             child: c(
                                 // color: Colors.blue,
@@ -316,21 +357,25 @@ class _HomeState extends BaseWidgetState<Home> {
                                   controller: _scrollController,
                                   itemBuilder: (context, index) {
                                     Post p = listPost[index];
+                                    if (index == 0) {
+                                      return leftHead;
+                                    }
                                     return postUI(
                                         name: p.posterName,
                                         status: p.status.name,
                                         img: p.url);
                                   },
                                 ))),
-                        c(color: Colors.black, w: xx(0.5)),
+                        // c(color: Colors.black, w: xx(0.5)),
                       ],
                     ),
                   ),
-                  dv,
+                  // dv,
                   Flexible(
                     flex: 1,
                     child: c(
                       // color: Colors.orange,
+                      topM: yy(100),
                       alig: Alignment.center,
                       child: Column(
                         children: [
@@ -344,7 +389,7 @@ class _HomeState extends BaseWidgetState<Home> {
                               return Column(
                                 children: [
                                   c(
-                                      h: yy(100),
+                                      h: yy(80),
                                       allM: xx(2),
                                       // color: Colors.red,
                                       child: Row(
@@ -353,7 +398,7 @@ class _HomeState extends BaseWidgetState<Home> {
                                           SizedBox(
                                             width: xx(10),
                                           ),
-                                          txtw(contact.name, size: xx(15))
+                                          txtw(contact.name, size: xx(10))
                                         ],
                                       )),
                                   const Divider(),
