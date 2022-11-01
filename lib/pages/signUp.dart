@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_end_flutter/base/base_widget.dart';
+import 'package:front_end_flutter/utils/network/network_util.dart';
 import 'package:front_end_flutter/utils/route/routeName.dart';
 
 class SignUp extends BaseWidget {
@@ -14,6 +15,8 @@ class SignUp extends BaseWidget {
 class _SignUpState extends BaseWidgetState<SignUp> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+
   TextEditingController passController = TextEditingController();
   TextEditingController repeatPassController = TextEditingController();
 
@@ -21,6 +24,8 @@ class _SignUpState extends BaseWidgetState<SignUp> {
   void dispose() {
     emailController.dispose();
     passController.dispose();
+    nameController.dispose();
+
     repeatPassController.dispose();
     super.dispose();
   }
@@ -58,6 +63,15 @@ class _SignUpState extends BaseWidgetState<SignUp> {
                                   ),
                                 ),
                                 c(
+                                  color: bc(),
+                                  w: xx(250),
+                                  h: yy(140),
+                                  child: myForm(
+                                    editingController: nameController,
+                                    hintText: "Name",
+                                  ),
+                                ),
+                                c(
                                   w: xx(250),
                                   h: yy(140),
                                   alig: Alignment.center,
@@ -83,7 +97,26 @@ class _SignUpState extends BaseWidgetState<SignUp> {
                   h: yy(120),
                   child: registerBttn(
                     onPointerDown: (onPointerDown) {
-                      toPage(routesName: RoutesName.HOME_PAGE);
+                      if (formKey.currentState!.validate()) {
+                        if (passController.text != repeatPassController.text) {
+                          showToast("Les deux mot de passe sont differents");
+                          passController.clear();
+                          repeatPassController.clear();
+                          rebuildState();
+                        } else {
+                          var body = {
+                            "name": nameController.text,
+                            "email": emailController.text,
+                            "password": passController.text,
+                          };
+                          postMap("register", body, (callback) {
+                            showToast(callback["status_message"]);
+                            if (callback['status'] == 1) {
+                              jumpToPage(routesName: RoutesName.LOGIN_PAGE);
+                            }
+                          });
+                        }
+                      }
                     },
                     txt: "REGISTER",
                     color: const Color.fromRGBO(48, 59, 83, 1),

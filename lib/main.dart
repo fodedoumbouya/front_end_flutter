@@ -13,16 +13,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Facebook php',
       builder: (context, child) => HomePage(child: child ?? const SizedBox()),
       onGenerateRoute: RouteGenerator.generateRoute,
-      initialRoute: RoutesName.LOGIN_PAGE,
-
+      initialRoute: RoutesName.INDEX,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         backgroundColor: Colors.grey[100],
       ),
-      // home: const Login(),
     );
   }
 }

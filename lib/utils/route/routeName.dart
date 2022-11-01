@@ -4,4 +4,6 @@ class RoutesName {
   // ignore: non_constant_identifier_names
   static const String SIGNUP_PAGE = '/signUp';
   static const String HOME_PAGE = '/home';
+  static const String PROFIL = '/profil';
+  static const String INDEX = '/';
 }

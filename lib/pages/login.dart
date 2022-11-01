@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:front_end_flutter/base/base_widget.dart';
+import 'package:front_end_flutter/model/model.dart';
+import 'package:front_end_flutter/utils/constant.dart';
+import 'package:front_end_flutter/utils/network/network_util.dart';
 import 'package:front_end_flutter/utils/route/routeName.dart';
 
 class Login extends BaseWidget {
@@ -87,8 +92,33 @@ class _LoginState extends BaseWidgetState<Login> {
                           Flexible(
                               flex: 1,
                               child: registerBttn(
-                                  onPointerDown: (onPointerDown) {
-                                    if (formKey.currentState!.validate()) {}
+                                  onPointerDown: (onPointerDown) async {
+                                    if (formKey.currentState!.validate()) {
+                                      postMap(
+                                        "login",
+                                        {
+                                          "name": emailController.text,
+                                          "password": passController.text
+                                        },
+                                        (callback) {
+                                          if (callback['status'] == 1) {
+                                            User user =
+                                                User.fromJson(callback['data']);
+                                            setValue(
+                                                    key: userKey,
+                                                    value: jsonEncode(user))
+                                                .then((value) {
+                                              jumpCleanToPage(
+                                                  routesName:
+                                                      RoutesName.HOME_PAGE);
+                                            });
+                                          } else {
+                                            showToast(
+                                                callback['status_message']);
+                                          }
+                                        },
+                                      );
+                                    }
                                   },
                                   txt: "LOG IN",
                                   color:
