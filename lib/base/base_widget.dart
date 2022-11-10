@@ -534,6 +534,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     String filePath = "",
     bool getFullData = false,
     bool isProfile = false,
+    bool isGet = false,
   }) async {
     var res = await globalRequest(
       path: url,
@@ -541,6 +542,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
       isFile: isFile,
       filePath: filePath,
       isProfile: isProfile,
+      isGet: isGet,
     );
     callback(res);
   }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:front_end_flutter/base/base_widget.dart';
 import 'package:front_end_flutter/data/fakeData.dart';
@@ -15,6 +17,7 @@ class Home extends BaseWidget {
 class _HomeState extends BaseWidgetState<Home> {
   TextEditingController textEditingController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  List<Posts> posts = [];
 
   // Widget get searchWidget => Container(
   //       margin: EdgeInsets.all(xx(2)),
@@ -55,6 +58,39 @@ class _HomeState extends BaseWidgetState<Home> {
   //         ),
   //       ),
   //     );
+
+  getData() async {
+    posts.clear();
+    postMap("posts", {}, (callback) {
+      for (var p in callback['data']) {
+        Posts post = Posts.fromJson(p);
+        posts.add(post);
+        rebuildState();
+      }
+    }, isGet: true);
+  }
+
+  addPost() async {
+    log("here-----------------");
+    if (textEditingController.text.isNotEmpty) {
+      var body = {
+        "userID": user?.id,
+        "title": "",
+        "content": textEditingController.text
+      };
+      postMap("posts", body, (callback) {
+        log(callback.toString());
+      });
+      textEditingController.clear();
+      rebuildState();
+    }
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -125,6 +161,7 @@ class _HomeState extends BaseWidgetState<Home> {
               maxLength: 200,
               maxLines: 7,
               // cursorHeight: xx(40),
+              controller: textEditingController,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: "Speak your mind ...",
@@ -140,8 +177,9 @@ class _HomeState extends BaseWidgetState<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const Icon(Icons.photo),
-                postBttn,
+                const MouseRegion(
+                    cursor: SystemMouseCursors.click, child: Icon(Icons.photo)),
+                GestureDetector(onTap: () => addPost(), child: postBttn),
               ],
             ),
           ),
@@ -153,21 +191,19 @@ class _HomeState extends BaseWidgetState<Home> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          c(
-              color: Colors.blue,
-              h: yy(80),
-              w: xx(60),
-              rightM: xx(2),
-              alig: Alignment.center,
-              child: txtw("Poster"),
-              borderRadius: BorderRadius.circular(xx(2))),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: c(
+                color: Colors.blue,
+                h: yy(80),
+                w: xx(60),
+                rightM: xx(2),
+                alig: Alignment.center,
+                child: txtw("Poster"),
+                borderRadius: BorderRadius.circular(xx(2))),
+          ),
         ],
       ));
-
-  // Widget get dvHere => Divider(
-  //       endIndent: xx(80),
-  //       indent: xx(40),
-  //     );
 
   @override
   Widget statusPost({required String txt, required IconData iconData}) {
@@ -199,27 +235,27 @@ class _HomeState extends BaseWidgetState<Home> {
                     flex: 2,
                     child: Row(
                       children: [
-                        // c(color: Colors.black, w: xx(0.5)),
                         Expanded(
                             child: c(
-                                // color: Colors.blue,
                                 bottomM: yy(20),
                                 alig: Alignment.center,
                                 child: ListView.builder(
-                                  itemCount: listPost.length,
+                                  itemCount: posts.length + 1,
                                   controller: _scrollController,
                                   itemBuilder: (context, index) {
-                                    Post p = listPost[index];
                                     if (index == 0) {
                                       return leftHead;
                                     }
+                                    index = index == 0 ? index : index - 1;
+                                    Posts p = posts[index];
+
                                     return postUI(
-                                        name: p.posterName,
-                                        status: p.status.name,
-                                        img: p.url);
+                                        name: p.username ?? "",
+                                        status: p.statut ?? "",
+                                        img:
+                                            'https://upload.wikimedia.org/wikipedia/commons/9/9a/Gull_portrait_ca_usa.jpg');
                                   },
                                 ))),
-                        // c(color: Colors.black, w: xx(0.5)),
                       ],
                     ),
                   ),
@@ -241,19 +277,22 @@ class _HomeState extends BaseWidgetState<Home> {
                               Contact contact = listContact[index];
                               return Column(
                                 children: [
-                                  c(
-                                      h: yy(80),
-                                      allM: xx(2),
-                                      // color: Colors.red,
-                                      child: Row(
-                                        children: [
-                                          avatar(url: contact.url),
-                                          SizedBox(
-                                            width: xx(10),
-                                          ),
-                                          txtw(contact.name, size: xx(10))
-                                        ],
-                                      )),
+                                  MouseRegion(
+                                    cursor: SystemMouseCursors.click,
+                                    child: c(
+                                        h: yy(80),
+                                        allM: xx(2),
+                                        // color: Colors.red,
+                                        child: Row(
+                                          children: [
+                                            avatar(url: contact.url),
+                                            SizedBox(
+                                              width: xx(10),
+                                            ),
+                                            txtw(contact.name, size: xx(10))
+                                          ],
+                                        )),
+                                  ),
                                   const Divider(),
                                 ],
                               );

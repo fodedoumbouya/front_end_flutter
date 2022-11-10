@@ -22,15 +22,18 @@ class _ProfilState extends BaseWidgetState<Profil> {
   }
 
   Widget amiProfil() {
-    return c(
-      h: yy(220),
-      w: xx(80),
-      // color: Colors.blue,
-      child: Column(
-        children: [
-          Expanded(child: myNetworkImage(url: "https://picsum.photos/200")),
-          txtw("contact name", size: xx(10), fontWeight: FontWeight.bold),
-        ],
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: c(
+        h: yy(220),
+        w: xx(80),
+        // color: Colors.blue,
+        child: Column(
+          children: [
+            Expanded(child: myNetworkImage(url: "https://picsum.photos/200")),
+            txtw("contact name", size: xx(10), fontWeight: FontWeight.bold),
+          ],
+        ),
       ),
     );
   }
@@ -48,44 +51,53 @@ class _ProfilState extends BaseWidgetState<Profil> {
                 top: xx(0),
                 left: xx(0),
                 right: xx(0),
-                child: c(
-                    h: yy(500),
-                    w: xx(800),
-                    child: myNetworkImage(
-                      url:
-                          "https://pbs.twimg.com/profile_banners/457684585/1510495215/1500x500",
-                      fit: BoxFit.fitWidth,
-                    )),
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: c(
+                      h: yy(500),
+                      w: xx(800),
+                      child: myNetworkImage(
+                        url:
+                            "https://pbs.twimg.com/profile_banners/457684585/1510495215/1500x500",
+                        fit: BoxFit.fitWidth,
+                      )),
+                ),
               ),
               Positioned(
                 top: yy(320),
                 left: xx(-100),
-                child: Container(
-                  height: yy(300),
-                  width: xx(300),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white, width: xx(2)),
-                      shape: BoxShape.circle),
-                  child: imageFromCachedNetworkImage(
-                      h: xx(200),
-                      w: xx(200),
-                      url:
-                          "https://pbs.twimg.com/profile_banners/457684585/1510495215/1500x500"),
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Container(
+                    height: yy(300),
+                    width: xx(300),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: xx(2)),
+                        shape: BoxShape.circle),
+                    child: imageFromCachedNetworkImage(
+                        h: xx(200),
+                        w: xx(200),
+                        url:
+                            "https://pbs.twimg.com/profile_banners/457684585/1510495215/1500x500"),
+                  ),
                 ),
               ),
               Positioned(
                   top: yy(530),
                   right: xx(10),
-                  child: c(
-                      h: yy(80),
-                      w: xx(80),
-                      alig: Alignment.center,
-                      border: Border.all(
-                          color: const Color.fromARGB(221, 175, 169, 169),
-                          width: 1),
-                      borderRadius: BorderRadius.circular(xx(10)),
-                      child: txtw("Modifier",
-                          size: xx(10), fontWeight: FontWeight.bold))),
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: c(
+                        h: yy(80),
+                        w: xx(80),
+                        alig: Alignment.center,
+                        border: Border.all(
+                            color: const Color.fromARGB(221, 175, 169, 169),
+                            width: 1),
+                        borderRadius: BorderRadius.circular(xx(10)),
+                        child: txtw("Modifier",
+                            size: xx(10), fontWeight: FontWeight.bold)),
+                  )),
             ],
           ),
         ),

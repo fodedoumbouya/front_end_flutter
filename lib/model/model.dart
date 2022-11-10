@@ -10,6 +10,47 @@ class Post {
       required this.status});
 }
 
+class Posts {
+  Posts({
+    this.id,
+    this.userID,
+    this.title,
+    this.content,
+    this.statut,
+    this.username,
+    this.userpicture,
+  });
+  String? id;
+  String? userID;
+  String? title;
+  String? content;
+  String? statut;
+  String? username;
+  String? userpicture;
+
+  Posts.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userID = json['userID'];
+    title = json['title'];
+    content = json['content'];
+    statut = json['statut'];
+    username = json['username'];
+    userpicture = json['userpicture'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['userID'] = userID;
+    _data['title'] = title;
+    _data['content'] = content;
+    _data['statut'] = statut;
+    _data['username'] = username;
+    _data['userpicture'] = userpicture;
+    return _data;
+  }
+}
+
 class Contact {
   String id;
   String name;

@@ -75,17 +75,7 @@ Future globalRequest({
   // }
 
   Map<String, dynamic> httpBody;
-  // if (body == null) {
-  //   httpBody = {};
-  // } else {
   httpBody = Map<String, dynamic>.from(body);
-  // }
-  // httpBody["App version"] = p.version;
-  // httpBody['Package name'] = p.packageName;
-  // httpBody["device_info"] = await sm.getDeviceInfo();
-  // httpBody['Build number'] = p.buildNumber;
-  // httpBody['Build signature'] = p.buildSignature;
-  // httpBody['Installer store'] = p.installerStore ?? 'not available';
   path = "$path.php";
   print("request: $path,params: $httpBody");
   Map<String, dynamic> headers =
