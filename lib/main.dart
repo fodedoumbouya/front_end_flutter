@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_end_flutter/pages/404.dart';
 import 'package:front_end_flutter/utils/route/routeGenerator.dart';
 import 'package:front_end_flutter/utils/route/routeName.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Facebook php',
-      builder: (context, child) => HomePage(child: child ?? const SizedBox()),
+      builder: (context, child) => HomePage(child: child ?? const Error404()),
       onGenerateRoute: RouteGenerator.generateRoute,
       initialRoute: RoutesName.INDEX,
       theme: ThemeData(

@@ -108,7 +108,13 @@ class _SignUpState extends BaseWidgetState<SignUp> {
                             "name": nameController.text,
                             "email": emailController.text,
                             "password": passController.text,
+                            "confirm_password": repeatPassController.text
                           };
+                          // {
+                          //   "name": nameController.text,
+                          //   "email": emailController.text,
+                          //   "password": passController.text,
+                          // };
                           postMap("register", body, (callback) {
                             showToast(callback["status_message"]);
                             if (callback['status'] == 1) {

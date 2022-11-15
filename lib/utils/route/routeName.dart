@@ -6,4 +6,5 @@ class RoutesName {
   static const String HOME_PAGE = '/home';
   static const String PROFIL = '/profil';
   static const String INDEX = '/';
+  static const String FRIEND_VIEW = '/friend_view';
 }

@@ -60,6 +60,7 @@ Future globalRequest({
   bool isFile = false,
   String filePath = "",
   bool isProfile = false,
+  String params = "",
 }) async {
   // if (isFile) {
   //   dio = null;
@@ -78,8 +79,8 @@ Future globalRequest({
   httpBody = Map<String, dynamic>.from(body);
   path = "$path.php";
   print("request: $path,params: $httpBody");
-  Map<String, dynamic> headers =
-      (token.isNotEmpty ? {'Authorization': "Bearer " + token} : {});
+  Map<String, dynamic> headers = {"Access-Control-Allow-Origin": "*"};
+  // (token.isNotEmpty ? {'Authorization': "Bearer " + token} : {});
 
   Response response;
   try {
@@ -98,8 +99,14 @@ Future globalRequest({
       } else {
         data = httpBody;
       }
+      // if (isGet) {
+      //   String u = params.isEmpty ? path : "$path?$params";
+      //   response = await dio!.get(u, options: Options(headers: headers));
+      // } else {
       response =
           await dio!.post(path, data: data, options: Options(headers: headers));
+      // }
+      print("Post here:  ${response.data}");
     }
   } catch (e) {
     debugPrint("network error:" + e.toString());

@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:front_end_flutter/base/base_widget.dart';
-import 'package:front_end_flutter/data/fakeData.dart';
 import 'package:front_end_flutter/model/model.dart';
+import 'package:front_end_flutter/utils/network/network_util.dart';
 
 class Home extends BaseWidget {
   const Home({Key? key}) : super(key: key);
@@ -18,6 +18,7 @@ class _HomeState extends BaseWidgetState<Home> {
   TextEditingController textEditingController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   List<Posts> posts = [];
+  List<Friends> friends = [];
 
   // Widget get searchWidget => Container(
   //       margin: EdgeInsets.all(xx(2)),
@@ -61,34 +62,47 @@ class _HomeState extends BaseWidgetState<Home> {
 
   getData() async {
     posts.clear();
-    postMap("posts", {}, (callback) {
-      for (var p in callback['data']) {
+    getMap("posts", {}, (callback) {
+      for (var p in (callback['data'] as List).reversed) {
         Posts post = Posts.fromJson(p);
         posts.add(post);
         rebuildState();
       }
-    }, isGet: true);
+    });
   }
 
   addPost() async {
-    log("here-----------------");
     if (textEditingController.text.isNotEmpty) {
       var body = {
         "userID": user?.id,
-        "title": "",
+        "title": user?.name,
         "content": textEditingController.text
       };
       postMap("posts", body, (callback) {
         log(callback.toString());
+        getData();
+        showToast(callback['status_message'], bgColor: Colors.blue);
       });
       textEditingController.clear();
       rebuildState();
     }
   }
 
+  getContacts() async {
+    getMap("friends", {"userID": user!.id}, (callback) {
+      // log(callback.toString());
+      for (var f in (callback['data'] as List).reversed) {
+        Friends fr = Friends.fromJson(f);
+        friends.add(fr);
+        rebuildState();
+      }
+    });
+  }
+
   @override
   void initState() {
     getData();
+    getContacts();
     super.initState();
   }
 
@@ -121,7 +135,6 @@ class _HomeState extends BaseWidgetState<Home> {
                   )),
             ),
           ),
-          // c(color: Colors.black, w: xx(0.5)),
           Flexible(
             flex: 3,
             child: c(
@@ -241,17 +254,18 @@ class _HomeState extends BaseWidgetState<Home> {
                                 alig: Alignment.center,
                                 child: ListView.builder(
                                   itemCount: posts.length + 1,
+                                  // reverse: true,
                                   controller: _scrollController,
                                   itemBuilder: (context, index) {
                                     if (index == 0) {
                                       return leftHead;
                                     }
+
                                     index = index == 0 ? index : index - 1;
                                     Posts p = posts[index];
 
                                     return postUI(
-                                        name: p.username ?? "",
-                                        status: p.statut ?? "",
+                                        p: p,
                                         img:
                                             'https://upload.wikimedia.org/wikipedia/commons/9/9a/Gull_portrait_ca_usa.jpg');
                                   },
@@ -268,13 +282,13 @@ class _HomeState extends BaseWidgetState<Home> {
                       alig: Alignment.center,
                       child: Column(
                         children: [
-                          txtw("Contacts",
+                          txtw("Contacts  (${friends.length})",
                               size: xx(15), fontWeight: FontWeight.bold),
                           Expanded(
                               child: ListView.builder(
-                            itemCount: listContact.length,
+                            itemCount: friends.length,
                             itemBuilder: (context, index) {
-                              Contact contact = listContact[index];
+                              Friends friend = friends[index];
                               return Column(
                                 children: [
                                   MouseRegion(
@@ -285,11 +299,14 @@ class _HomeState extends BaseWidgetState<Home> {
                                         // color: Colors.red,
                                         child: Row(
                                           children: [
-                                            avatar(url: contact.url),
+                                            avatar(
+                                                url:
+                                                    "https://picsum.photos/200"), //friend.url
                                             SizedBox(
                                               width: xx(10),
                                             ),
-                                            txtw(contact.name, size: xx(10))
+                                            txtw(friend.name ?? "",
+                                                size: xx(10))
                                           ],
                                         )),
                                   ),

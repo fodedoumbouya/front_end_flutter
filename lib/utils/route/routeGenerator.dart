@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_end_flutter/pages/friend_view.dart';
 import 'package:front_end_flutter/pages/home.dart';
 import 'package:front_end_flutter/pages/index.dart';
 import 'package:front_end_flutter/pages/login.dart';
@@ -24,6 +25,10 @@ class RouteGenerator {
       case RoutesName.PROFIL:
         return _GeneratePageRoute(
             widget: const Profil(), routeName: settings.name ?? "");
+      case RoutesName.FRIEND_VIEW:
+        return _GeneratePageRoute(
+            widget: FriendView(arguments: settings.arguments),
+            routeName: settings.name ?? "");
       default:
         return _GeneratePageRoute(
             widget: const Login(), routeName: settings.name ?? "");
@@ -46,16 +51,17 @@ class _GeneratePageRoute extends PageRouteBuilder {
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
                 Widget child) {
-              return FadeTransition(
-                //SlideTransition
-                opacity: animation,
-                alwaysIncludeSemantics: true,
-                // textDirection: TextDirection.rtl,
-                // position: Tween<Offset>(
-                //   begin: const Offset(1.0, 0.0),
-                //   end: Offset.zero,
-                // ).animate(animation),
-                child: child,
-              );
+              return child;
+              // FadeTransition(
+              //   //SlideTransition
+              //   opacity: animation,
+              //   alwaysIncludeSemantics: true,
+              //   // textDirection: TextDirection.rtl,
+              //   // position: Tween<Offset>(
+              //   //   begin: const Offset(1.0, 0.0),
+              //   //   end: Offset.zero,
+              //   // ).animate(animation),
+              //   child: child,
+              // );
             });
 }

@@ -77,8 +77,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     super.didChangeDependencies();
   }
 
-  Future toPage({required String routesName}) {
-    return Navigator.pushNamed(context, routesName);
+  Future toPage({required String routesName, Object? arguments}) {
+    return Navigator.pushNamed(context, routesName, arguments: arguments);
   }
 
   // void popUntil(String name) {
@@ -185,8 +185,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         backgroundColor: bc(),
       );
 
-  Widget postUI(
-      {required String name, required String status, required String img}) {
+  Widget postUI({required Posts p, required String img}) {
     return c(
       h: yy(1300),
       w: xx(330),
@@ -205,17 +204,25 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // dv,
-          c(
-              h: yy(130),
-              child: ListTile(
-                leading: profil,
-                title: txtw(name, size: xx(15), fontWeight: FontWeight.w500),
-                subtitle: statusPost(
-                    txt: status,
-                    iconData: Icons.wifi_tethering_error_rounded_outlined),
-                // trailing: txtw("2022/10/10"),
-              )),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: Listener(
+              onPointerDown: (event) => toPage(
+                  routesName: RoutesName.FRIEND_VIEW,
+                  arguments: {"id": p.userID, "name": p.username}),
+              child: c(
+                  h: yy(130),
+                  child: ListTile(
+                    leading: profil,
+                    title: txtw(p.title ?? "",
+                        size: xx(15), fontWeight: FontWeight.w500),
+                    subtitle: statusPost(
+                        txt: p.statut ?? "",
+                        iconData: Icons.wifi_tethering_error_rounded_outlined),
+                    // trailing: txtw("2022/10/10"),
+                  )),
+            ),
+          ),
           c(
             // color: Colors.red,
             h: yy(140),
@@ -223,8 +230,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
             alig: Alignment.center,
             leftM: xx(45),
             rightM: xx(30),
-            child: txtw(
-                "bla bla bla bla blaa bla bla bla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla ",
+            child: txtw(p.content ?? "",
+                //   "bla bla bla bla blaa bla bla bla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla ",
                 maxLines: 3,
                 color: const Color.fromRGBO(51, 51, 51, 1).withOpacity(0.7),
                 size: xx(10)),
@@ -543,6 +550,20 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
       filePath: filePath,
       isProfile: isProfile,
       isGet: isGet,
+    );
+    callback(res);
+  }
+
+  void getMap(
+    String url,
+    // String params,
+    Map<String, dynamic> body,
+    var callback,
+  ) async {
+    var res = await globalRequest(
+      path: url,
+      body: body,
+      isGet: true,
     );
     callback(res);
   }

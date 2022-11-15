@@ -1,13 +1,45 @@
-class Post {
-  int index;
-  String url;
-  String posterName;
-  POSTSTATUS status;
-  Post(
-      {required this.index,
-      required this.url,
-      required this.posterName,
-      required this.status});
+// class Post {
+//   int index;
+//   String url;
+//   String posterName;
+//   POSTSTATUS status;
+//   Post(
+//       {required this.index,
+//       required this.url,
+//       required this.posterName,
+//       required this.status});
+// }
+class Friends {
+  Friends({
+    this.id,
+    this.createdDate,
+    this.name,
+    this.email,
+    this.picture,
+  });
+  String? id;
+  String? createdDate;
+  String? name;
+  String? email;
+  String? picture;
+
+  Friends.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    createdDate = json['created_date'];
+    name = json['name'];
+    email = json['email'];
+    picture = json['picture'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['created_date'] = createdDate;
+    _data['name'] = name;
+    _data['email'] = email;
+    _data['picture'] = picture;
+    return _data;
+  }
 }
 
 class Posts {
