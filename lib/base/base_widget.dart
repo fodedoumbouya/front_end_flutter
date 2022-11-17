@@ -36,7 +36,18 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     init();
     WidgetsBinding.instance.addObserver(this);
     onCreate();
+    check();
     super.initState();
+  }
+
+  check() {
+    if (user == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (globalIndex != RoutesName.INDEX) {
+          toPage(routesName: RoutesName.INDEX);
+        }
+      });
+    }
   }
 
   init() async {

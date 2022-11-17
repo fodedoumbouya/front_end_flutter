@@ -20,6 +20,16 @@ class _IndexState extends BaseWidgetState<Index> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  check() {
+    return super.check();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(

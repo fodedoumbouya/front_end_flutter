@@ -5,6 +5,7 @@ import 'package:front_end_flutter/pages/index.dart';
 import 'package:front_end_flutter/pages/login.dart';
 import 'package:front_end_flutter/pages/profil.dart';
 import 'package:front_end_flutter/pages/signUp.dart';
+import 'package:front_end_flutter/utils/global.dart';
 import 'package:front_end_flutter/utils/route/routeName.dart';
 
 class RouteGenerator {
@@ -51,6 +52,8 @@ class _GeneratePageRoute extends PageRouteBuilder {
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
                 Widget child) {
+              globalIndex = routeName;
+
               return child;
               // FadeTransition(
               //   //SlideTransition

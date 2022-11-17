@@ -93,32 +93,33 @@ class _LoginState extends BaseWidgetState<Login> {
                               flex: 1,
                               child: registerBttn(
                                   onPointerDown: (onPointerDown) async {
-                                    // if (formKey.currentState!.validate()) {
-                                    postMap(
-                                      "login",
-                                      {
-                                        "email": emailController.text,
-                                        "password": passController.text
-                                      },
-                                      (callback) {
-                                        if (callback['status'] == 1) {
-                                          User _user =
-                                              User.fromJson(callback['data']);
-                                          user = _user;
-                                          setValue(
-                                                  key: userKey,
-                                                  value: jsonEncode(user))
-                                              .then((value) {
-                                            jumpCleanToPage(
-                                                routesName:
-                                                    RoutesName.HOME_PAGE);
-                                          });
-                                        } else {
-                                          showToast(callback['status_message']);
-                                        }
-                                      },
-                                    );
-                                    // }
+                                    if (formKey.currentState!.validate()) {
+                                      postMap(
+                                        "login",
+                                        {
+                                          "email": emailController.text,
+                                          "password": passController.text
+                                        },
+                                        (callback) {
+                                          if (callback['status'] == 1) {
+                                            User _user =
+                                                User.fromJson(callback['data']);
+                                            user = _user;
+                                            setValue(
+                                                    key: userKey,
+                                                    value: jsonEncode(user))
+                                                .then((value) {
+                                              jumpCleanToPage(
+                                                  routesName:
+                                                      RoutesName.HOME_PAGE);
+                                            });
+                                          } else {
+                                            showToast(
+                                                callback['status_message']);
+                                          }
+                                        },
+                                      );
+                                    }
                                   },
                                   txt: "LOG IN",
                                   color:

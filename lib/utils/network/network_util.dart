@@ -4,8 +4,31 @@ import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:front_end_flutter/utils/global.dart';
+import 'package:http/http.dart' as http;
 
-const String host = "http://localhost/back_facebook/";
+const String host = "http://152.32.143.204/back_facebook/";
+
+Future<http.Response> postRequest({
+  required String path,
+  required Map<String, dynamic> body,
+}) async {
+  var url = "$host$path.php";
+
+  // Map data = {'apikey': '12345678901234567890'};
+  //encode Map to JSON
+  var b = json.encode(body);
+
+  var response = await http.post(Uri.parse(url),
+      // headers: {
+      //   "Content-Type": "application/json",
+      //   "Access-Control-Allow-Origin": "*",
+      //   "Access-Control-Allow-Headers": "*"
+      // },
+      body: b);
+  print("${response.statusCode}");
+  print(response.body);
+  return response;
+}
 
 showToast(
   String msg, {
@@ -79,14 +102,16 @@ Future globalRequest({
   httpBody = Map<String, dynamic>.from(body);
   path = "$path.php";
   print("request: $path,params: $httpBody");
-  Map<String, dynamic> headers = {"Access-Control-Allow-Origin": "*"};
+  // Map<String, dynamic> headers = {"Access-Control-Allow-Origin": "*"};
   // (token.isNotEmpty ? {'Authorization': "Bearer " + token} : {});
 
   Response response;
   try {
     if (isGet) {
-      response = await dio!.get(path,
-          queryParameters: httpBody, options: Options(headers: headers));
+      response = await dio!.get(
+        path,
+        queryParameters: httpBody,
+      ); // options: Options(headers: headers)
     } else {
       Object data;
       if (isFile) {
@@ -103,8 +128,10 @@ Future globalRequest({
       //   String u = params.isEmpty ? path : "$path?$params";
       //   response = await dio!.get(u, options: Options(headers: headers));
       // } else {
-      response =
-          await dio!.post(path, data: data, options: Options(headers: headers));
+      response = await dio!.post(
+        path,
+        data: data,
+      ); // options: Options(headers: headers)
       // }
       print("Post here:  ${response.data}");
     }
